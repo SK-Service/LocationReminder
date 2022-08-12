@@ -1,2 +1,18 @@
+//pluginManagement {
+//    repositories {
+//        google()
+//        gradlePluginPortal()
+//        mavenCentral()
+//    }
+//}
+//
 include ':app'
 rootProject.name='Project4'
+//
+//dependencyResolutionManagement {
+//    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+//    repositories {
+//        google()
+//        mavenCentral()
+//    }
+//}
