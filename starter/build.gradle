@@ -17,9 +17,11 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
         classpath 'com.google.gms:google-services:4.3.13'
+        classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+
     }
 }
 
@@ -63,7 +65,8 @@ ext {
     robolectricVersion = '4.3-beta-1'
     androidXTestExtKotlinRunnerVersion = '1.1.1'
     archTestingVersion = '2.0.0'
-    playServicesVersion = '18.1.0'
+    playLocationVersion = '19.0.1'
+    playMapsVersion = '18.0.2'
     hamcrestVersion = '1.3'
     androidXTestRulesVersion = '1.2.0-beta01'
     espressoVersion = '3.2.0'

@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'com.google.gms.google-services'
-//apply plugin: 'com.google.gms.play-services'
+apply plugin: 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -125,11 +125,12 @@ dependencies {
 
 
     //Maps & Geofencing
-    implementation "com.google.android.gms:play-services-location:$playServicesVersion"
-    implementation "com.google.android.gms:play-services-maps:$playServicesVersion"
+    implementation "com.google.android.gms:play-services-location:$playLocationVersion"
+    implementation "com.google.android.gms:play-services-maps:$playMapsVersion"
 
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:30.3.2')
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
 
     //
 
