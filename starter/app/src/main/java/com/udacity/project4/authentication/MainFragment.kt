@@ -35,6 +35,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.udacity.project4.R
 import com.udacity.project4.databinding.FragmentMainBinding
+import com.udacity.project4.locationreminders.RemindersActivity
 
 class MainFragment : Fragment() {
 
@@ -116,6 +117,11 @@ class MainFragment : Fragment() {
                         // TODO 2. If the user is logged in,
                         binding.welcomeText.text = getFactWithPersonalization(factToDisplay)
 
+                        //Start RemindersActivity after the user has successfully logged in
+                        activity?.let {
+                            val intent = Intent(it, RemindersActivity::class.java)
+                            it.startActivity(intent)
+                        }
                     }
                     else -> {
                         // TODO 3. Lastly, if there is no logged-in user,
