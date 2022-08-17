@@ -51,6 +51,7 @@ class MainFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+        Log.i(TAG, "inside onCreateView")
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
 
         // TODO Remove the two lines below once observeAuthenticationState is implemented.
@@ -82,7 +83,7 @@ class MainFragment : Fragment() {
         // TODO Listen to the result of the sign in process by filter for when
         //  SIGN_IN_REQUEST_CODE is passed back. Start by having log statements to know
         //  whether the user has signed in successfully
-    Log.i(TAG, "Inside onActivityResult; result code:<${resultCode}>")
+    Log.i(TAG, "Inside onActivityResult; result code:<${resultCode}>, request code:<${requestCode}")
 
         if (requestCode == MainFragment.SIGN_IN_RESULT_CODE) {
             val response = IdpResponse.fromResultIntent(data)
