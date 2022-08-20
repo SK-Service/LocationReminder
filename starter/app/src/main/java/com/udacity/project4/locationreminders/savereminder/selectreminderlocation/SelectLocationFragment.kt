@@ -122,7 +122,7 @@ class SelectLocationFragment : BaseFragment() {
                     // Show the dialog by calling startResolutionForResult(),
                     // and check the result in onActivityResult().
                     exception.startResolutionForResult(
-                        getAcvity(),
+                        requireActivity(),
                         REQUEST_TURN_DEVICE_LOCATION_ON
                     )
                 } catch (sendEx: IntentSender.SendIntentException) {
