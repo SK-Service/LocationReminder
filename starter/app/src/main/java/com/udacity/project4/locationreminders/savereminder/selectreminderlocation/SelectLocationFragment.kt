@@ -1,11 +1,13 @@
 package com.udacity.project4.locationreminders.savereminder.selectreminderlocation
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.Intent
 
 import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.content.res.Resources
 
 import android.location.Location
 import android.os.Bundle
@@ -19,8 +21,10 @@ import androidx.navigation.fragment.findNavController
 
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import com.google.android.gms.maps.CameraUpdateFactory
 
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
 
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
@@ -35,11 +39,12 @@ import com.udacity.project4.databinding.FragmentSelectLocationBinding
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
+import java.util.*
 
 private const val TAG = "SaveReminderFragment"
 private const val REQUEST_TURN_DEVICE_LOCATION_ON = 29
 
-class SelectLocationFragment : BaseFragment() {
+class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
     //Use Koin to get the view model of the SaveReminder
     override val _viewModel: SaveReminderViewModel by inject()
@@ -81,6 +86,109 @@ class SelectLocationFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
+        setMapStyle()
+        setMapLongClick()
+        setPoiClick()
+        getDeviceLocation()
+    }
+
+        private fun setPoiClick() {
+            map.setOnPoiClickListener {
+                map.clear()
+                selectedMarker = map.addMarker(
+                    MarkerOptions()
+                        .position(it.latLng)
+                        .title(it.name)
+                )!!
+                selectedMarker.showInfoWindow()
+            }
+        }
+
+    private fun setMapLongClick() {
+        map.setOnMapLongClickListener {
+            map.clear()
+            val snippet = String.format(
+                Locale.getDefault(),
+                "Lat: %1$.5f, Long: %2$.5f",
+                it.latitude,
+                it.longitude
+            )
+            selectedMarker = map.addMarker(
+                MarkerOptions()
+                    .position(it)
+                    .title(getString(R.string.dropped_pin))
+                    .snippet(snippet)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
+            )!!
+            selectedMarker.showInfoWindow()
+        }
+    }
+
+    private fun setMapStyle() {
+        try {
+            val success = map.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    requireContext(),
+                    R.raw.map_style
+                )
+            )
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.")
+            }
+        } catch (e: Resources.NotFoundException) {
+            Log.e(TAG, "Can't find style. Error: ", e)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getDeviceLocation() {
+        /*
+         * Get the best and most recent location of the device, which may be null in rare
+         * cases when a location is not available.
+         */
+        val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        try {
+            if (isPermissionGranted()) {
+                map.isMyLocationEnabled = true
+                val locationResult = fusedLocationProviderClient.lastLocation
+                locationResult.addOnCompleteListener(requireActivity()) { task ->
+                    if (task.isSuccessful) {
+                        // Set the map's camera position to the current location of the device.
+                        if (task.result != null) {
+                            lastKnownLocation = task.result!!
+                            map.moveCamera(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    LatLng(
+                                        lastKnownLocation!!.latitude,
+                                        lastKnownLocation!!.longitude
+                                    ),
+                                    DEFAULT_ZOOM.toFloat()
+                                )
+                            )
+                        }
+                    } else {
+                        Log.d(TAG, "Current location is null. Using defaults.")
+                        Log.e(TAG, "Exception: %s", task.exception)
+                        map.moveCamera(
+                            CameraUpdateFactory
+                                .newLatLngZoom(defaultLocation, DEFAULT_ZOOM.toFloat())
+                        )
+                        map?.uiSettings?.isMyLocationButtonEnabled = false
+                    }
+                }
+            } else {
+                requestPermissions(
+                    arrayOf<String>(android.Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION
+                )
+            }
+        } catch (e: SecurityException) {
+            Log.e("Exception: %s", e.message, e)
+        }
+    }
+
+
     private fun onLocationSelected() {
         //        TODO: When the user confirms on the selected location,
         //         send back the selected location details to the view model
@@ -94,11 +202,6 @@ class SelectLocationFragment : BaseFragment() {
             val toast = Toast.makeText(context, resources.getString(R.string.select_location), Toast.LENGTH_SHORT)
             toast.show()
         }
-    }
-
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.map_options, menu)
     }
 
     //To check device locationn settings
@@ -160,6 +263,10 @@ class SelectLocationFragment : BaseFragment() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.map_options, menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         // TODO: Change the map type based on the user's selection.
         R.id.normal_map -> {
@@ -181,13 +288,25 @@ class SelectLocationFragment : BaseFragment() {
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun isPermissionGranted(): Boolean {
-        return context?.let {
-            ContextCompat.checkSelfPermission(
-                it,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        } == PackageManager.PERMISSION_GRANTED
+//    private fun isPermissionGranted(): Boolean {
+//        return context?.let {
+//            ContextCompat.checkSelfPermission(
+//                it,
+//                android.Manifest.permission.ACCESS_FINE_LOCATION
+//            )
+//        } == PackageManager.PERMISSION_GRANTED
+//    }
+
+    private fun isPermissionGranted() : Boolean {
+        var permissionGranted: Boolean = false
+
+        if (ContextCompat.checkSelfPermission(requireContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(requireContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            permissionGranted = true
+        }
+        return permissionGranted
     }
 
 }
