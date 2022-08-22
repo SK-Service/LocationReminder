@@ -41,7 +41,7 @@ import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
 import java.util.*
 
-private const val TAG = "SaveReminderFragment"
+private const val TAG = "SelectLocationFragment"
 private const val REQUEST_TURN_DEVICE_LOCATION_ON = 29
 
 class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
@@ -52,7 +52,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
 
     private val REQUEST_LOCATION_PERMISSION = 1
-    private val DEFAULT_ZOOM = 17f
+    private val DEFAULT_ZOOM = 5f
     private val defaultLocation = LatLng(21.8359, 88.8842)
     private lateinit var lastKnownLocation: Location
     private lateinit var selectedMarker: Marker
@@ -67,8 +67,9 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         binding.lifecycleOwner = this
 
         setHasOptionsMenu(true)
+        Log.i(TAG, "inside onCreateView before setDisplayHomeAsUpEnabled")
         setDisplayHomeAsUpEnabled(true)
-
+        Log.i(TAG, "inside onCreateView after setDisplayHomeAsUpEnabled")
         checkDeviceLocationSettings()
 //        TODO: add the map setup implementation
         val mapFragment = childFragmentManager.findFragmentById(R.id.select_map) as SupportMapFragment
@@ -288,14 +289,6 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         else -> super.onOptionsItemSelected(item)
     }
 
-//    private fun isPermissionGranted(): Boolean {
-//        return context?.let {
-//            ContextCompat.checkSelfPermission(
-//                it,
-//                android.Manifest.permission.ACCESS_FINE_LOCATION
-//            )
-//        } == PackageManager.PERMISSION_GRANTED
-//    }
 
     private fun isPermissionGranted() : Boolean {
         var permissionGranted: Boolean = false

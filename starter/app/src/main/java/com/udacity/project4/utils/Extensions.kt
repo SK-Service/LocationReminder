@@ -19,7 +19,7 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 
-
+private const val TAG = "Extension Functions"
 /**
  * Extension function to setup the RecyclerView
  */
@@ -39,9 +39,11 @@ fun Fragment.setTitle(title: String) {
 }
 
 fun Fragment.setDisplayHomeAsUpEnabled(bool: Boolean) {
+    Log.i(TAG, "inside setDisplayHomeAsUpEnabled")
     if (activity is AppCompatActivity) {
+            Log.i(TAG,"setDisplayHomeAsUpEnabled - Activity is AppCompatActivity ")
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(
-            bool
+            true
         )
     }
 }
