@@ -61,10 +61,10 @@ class SaveReminderViewModelTest {
     }
 
     @Test
-    fun validate_savingFailureOfReminders() = mainCoroutineRule.runBlockingTest {
+    fun validate_savingRemindersLocationEmpty() = mainCoroutineRule.runBlockingTest {
         //GIVEN
-        val reminder = ReminderDataItem("Title", null,
-        "Location", 21.8359, 88.8842)
+        val reminder = ReminderDataItem("Title", "Reminder Location",
+        "", 21.8359, 88.8842)
 
         //WHEN
         mainCoroutineRule.pauseDispatcher()
@@ -75,5 +75,19 @@ class SaveReminderViewModelTest {
 
     }
 
+    @Test
+    fun validate_savingRemindersTitleNull() = mainCoroutineRule.runBlockingTest {
+        //GIVEN
+        val reminder = ReminderDataItem(null, "Reminder Location",
+            "Location", 21.8359, 88.8842)
+
+        //WHEN
+        mainCoroutineRule.pauseDispatcher()
+        saveReminderViewModel.validateAndSaveReminder(reminder)
+        //THAT
+        assertThat(saveReminderViewModel.showSnackBarInt.getOrAwaitValue(),
+            `is`(Matchers.notNullValue()))
+
+    }
 
 }
