@@ -76,8 +76,8 @@ var instantExecutorRule = InstantTaskExecutorRule()
             modules(listOf(myModule))
         }
         // Get the real repository
-//       repository = GlobalContext.get().koin.get
-         //val repository: ReminderDataSource by inject()
+        // 1. repository = GlobalContext.get().koin.get
+         //2. val repository: ReminderDataSource by inject()
 
 
         // clear the data to start fresh
