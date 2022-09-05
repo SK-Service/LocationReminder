@@ -91,9 +91,10 @@ var instantExecutorRule = InstantTaskExecutorRule()
     @Test
     fun addNewReminder_navigatesToSaveReminder() {
         // GIVEN - on ReminderList
-        val scenario = launchFragmentInContainer<ReminderListFragment>(Bundle(), R.style.AppTheme)
+        val reminderListFragment = launchFragmentInContainer<ReminderListFragment>(Bundle(),
+                                R.style.AppTheme)
         val navController = mock(NavController::class.java)
-        scenario.onFragment {
+        reminderListFragment.onFragment {
             Navigation.setViewNavController(it.view!!, navController)
         }
 
