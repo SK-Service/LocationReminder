@@ -165,7 +165,7 @@ class ReminderListFragmentTest : KoinTest {
         IdlingRegistry.getInstance().unregister(dataBindingIdlingResource)
     }
     @Test
-    fun addNewReminder_ReminderListShowsNewReminderAndToast() = runBlocking {
+    fun addNewReminder_ListUpdatedWithNewReminder() = runBlocking {
 
         // GIVEN - an empty ReminderList
         val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
@@ -179,10 +179,9 @@ class ReminderListFragmentTest : KoinTest {
         onView(withId(R.id.selectLocation)).perform(click())
         onView(withId(R.id.select_map)).perform(longClick())
         onView(withId(R.id.save_button)).perform(click())
-        onView(withId(R.id.saveReminder)).perform(click())
+       onView(withId(R.id.saveReminder)).perform(click())
 
         // THEN - ReminderList shows item and toast
-        // ToastCheck from https://knowledge.udacity.com/questions/663647
         onView(withText(R.string.reminder_saved)).inRoot(withDecorView(not(`is`(activity?.window?.decorView))))
             .check(
                 matches(
@@ -192,7 +191,7 @@ class ReminderListFragmentTest : KoinTest {
         onView(withText("Title")).check(matches(isDisplayed()))
 
         runBlocking {
-            delay(3000)
+            delay(6000)
         }
     }
 
