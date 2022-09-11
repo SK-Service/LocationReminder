@@ -33,5 +33,11 @@ class ReminderDescriptionActivity : AppCompatActivity() {
             R.layout.activity_reminder_description
         )
 //        TODO: Add the implementation of the reminder details
+        binding.reminderDataItem =
+            intent.getStringExtra(EXTRA_ReminderDataItem) as ReminderDataItem
+        binding.closeButton.setOnClickListener {
+//            onBackPressed()
+            finish()
+        }
     }
 }
