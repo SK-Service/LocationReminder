@@ -141,9 +141,7 @@ class MainFragment : Fragment() {
         return String.format(
             resources.getString(
                 R.string.welcome_message_authed,
-                FirebaseAuth.getInstance().currentUser?.displayName,
-                Character.toLowerCase(fact[0]) + fact.substring(1)
-            )
+                FirebaseAuth.getInstance().currentUser?.displayName)
         )
     }
 

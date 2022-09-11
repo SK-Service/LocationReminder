@@ -80,7 +80,7 @@ class ReminderListFragment : BaseFragment() {
                 Log.i("ReminderListFragment" , "inside onOptionsItemSelected - before signout")
                 AuthUI.getInstance().signOut(requireContext()).addOnSuccessListener {
 
-                    //Start Authentication after the user has successfully logged out
+                    //Start Authentication Activity after the user has successfully logged out
                     activity?.let {
                         val intent = Intent(it, AuthenticationActivity::class.java)
                         it.startActivity(intent)
