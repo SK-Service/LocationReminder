@@ -3,6 +3,7 @@ package com.udacity.project4
 import android.app.Activity
 import org.koin.test.KoinTest
 import android.app.Application
+import androidx.navigation.NavController
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.espresso.Espresso.onView
@@ -17,6 +18,7 @@ import com.udacity.project4.locationreminders.RemindersActivity
 import com.udacity.project4.locationreminders.data.ReminderDataSource
 import com.udacity.project4.locationreminders.data.local.LocalDB
 import com.udacity.project4.locationreminders.data.local.RemindersLocalRepository
+import com.udacity.project4.locationreminders.reminderslist.ReminderListFragmentDirections
 import com.udacity.project4.locationreminders.reminderslist.RemindersListViewModel
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.util.DataBindingIdlingResource
@@ -34,6 +36,8 @@ import org.koin.dsl.module
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.test.inject
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -102,6 +106,7 @@ class RemindersActivityTest : KoinTest {
         val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
         val activity = getActivity(activityScenario)
+        val navController = mock(NavController::class.java)
 
         // WHEN - new Reminder added
         onView(withId(R.id.addReminderFAB)).perform(click())
@@ -124,6 +129,10 @@ class RemindersActivityTest : KoinTest {
         runBlocking {
             delay(6000)
         }
+
+        verify (navController).navigate(
+            ReminderListFragmentDirections.toSaveReminder(null, getApplicationContext<Context>().getString(R.string.))
+        )
     }
 
 
