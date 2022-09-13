@@ -130,9 +130,6 @@ class RemindersActivityTest : KoinTest {
             delay(6000)
         }
 
-        verify (navController).navigate(
-            ReminderListFragmentDirections.toSaveReminder(null, getApplicationContext<Context>().getString(R.string.))
-        )
     }
 
 
