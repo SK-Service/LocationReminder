@@ -102,13 +102,13 @@ class RemindersActivityTest : KoinTest {
     @Test
     fun addNewReminder_ListUpdatedWithNewReminder() = runBlocking {
 
-        // GIVEN - an empty ReminderList
+        // GIVEN
         val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
         val activity = getActivity(activityScenario)
         val navController = mock(NavController::class.java)
 
-        // WHEN - new Reminder added
+        // WHEN
         onView(withId(R.id.addReminderFAB)).perform(click())
         onView(withId(R.id.reminderTitle)).perform(replaceText("Title"))
         onView(withId(R.id.reminderDescription)).perform(replaceText("Description"))
@@ -117,13 +117,7 @@ class RemindersActivityTest : KoinTest {
         onView(withId(R.id.save_button)).perform(click())
        onView(withId(R.id.saveReminder)).perform(click())
 
-        // THEN - ReminderList shows item and toast
-        onView(withText(R.string.reminder_saved)).inRoot(withDecorView(not(`is`(activity?.window?.decorView))))
-            .check(
-                matches(
-                    isDisplayed()
-                )
-            )
+        // THEN
         onView(withText("Title")).check(matches(isDisplayed()))
 
         runBlocking {
@@ -131,7 +125,4 @@ class RemindersActivityTest : KoinTest {
         }
 
     }
-
-
-
 }

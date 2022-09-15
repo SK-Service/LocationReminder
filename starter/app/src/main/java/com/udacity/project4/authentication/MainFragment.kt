@@ -69,13 +69,6 @@ class MainFragment : Fragment() {
         binding.authButton.setOnClickListener { launchSignInFlow() }
         Log.i(TAG, "Inside OnCreateView - after set OnClickListener")
 
-//        binding.settingsBtn.setOnClickListener {
-////            val action = MainFragmentDire
-////
-////            findNavController().navigate(action)
-//            view.findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
-//        }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
