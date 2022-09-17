@@ -1,6 +1,6 @@
 package com.udacity.project4
 
-import android.R
+import com.udacity.project4.R
 import android.app.Activity
 import android.app.Application
 import androidx.navigation.NavController

@@ -27,6 +27,7 @@ import com.udacity.project4.locationreminders.geofence.GeofenceBroadcastReceiver
 import com.udacity.project4.locationreminders.reminderslist.ReminderDataItem
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 const val GEOFENCE_RADIUS_IN_METERS = 200f
 private const val TAG = "SaveReminderFragment"
@@ -37,7 +38,7 @@ private const val ACTION_GEOFENCE_EVENT = "SaveReminderFragment.action.ACTION_GE
 
 class SaveReminderFragment : BaseFragment() {
     //Get the view model this time as a single to be shared with the another fragment
-    override val _viewModel: SaveReminderViewModel by inject()
+    override val _viewModel by sharedViewModel<SaveReminderViewModel>()
     private lateinit var binding: FragmentSaveReminderBinding
 
     private val runningQOrLater =
