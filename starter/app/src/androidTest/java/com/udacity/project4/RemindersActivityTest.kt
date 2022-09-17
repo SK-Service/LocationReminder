@@ -25,6 +25,7 @@ import com.udacity.project4.util.DataBindingIdlingResource
 import com.udacity.project4.util.monitorActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsNot.not
 import org.junit.After
@@ -119,6 +120,9 @@ class RemindersActivityTest : KoinTest {
 
         // THEN
         onView(withText("Title")).check(matches(isDisplayed()))
+
+        onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.reminder_saved)))
+            .check(matches(isDisplayed()));
 
         runBlocking {
             delay(6000)

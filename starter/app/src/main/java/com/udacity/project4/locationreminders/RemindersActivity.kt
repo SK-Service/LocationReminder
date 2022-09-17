@@ -25,8 +25,6 @@ class RemindersActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                //TODO - need to debug nav_host_fragment
-//                (nav_host_fragment as NavHostFragment).navController.popBackStack()
                 finish()
                 return true
             }
