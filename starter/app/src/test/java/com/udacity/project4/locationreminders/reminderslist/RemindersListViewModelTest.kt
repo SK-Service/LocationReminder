@@ -13,6 +13,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.*
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.notNullValue
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
 import org.junit.Rule
@@ -45,36 +46,36 @@ class RemindersListViewModelTest {
         remindersListViewModel = RemindersListViewModel(application, dataSource)
     }
 
-    @Test
-    fun check_loading() = runTest(UnconfinedTestDispatcher()) {
-        val reminder = ReminderDTO("Title", "Description", "Location", 19.0, 20.2)
-
-
-        //mainCoroutineRule.pauseDispatcher()
-        val job = launch {
-            dataSource.saveReminder(reminder)
-        }
-        job.cancel()
-        remindersListViewModel.loadReminders()
-        assertThat(
-            remindersListViewModel.showLoading.getOrAwaitValue(), `is`(true)
-        )
-        job.start()
-        //  mainCoroutineRule.resumeDispatcher()
-        assertThat(
-            remindersListViewModel.showLoading.getOrAwaitValue(), `is`(false)
-        )
-
-    }
-
 //    @Test
-//    fun shouldReturnError() = mainCoroutineRule.runBlockingTest {
-//        dataSource.setReturnsError(true)
-//        remindersListViewModel.loadReminders()
+//    fun check_loading() = runTest(UnconfinedTestDispatcher()) {
+//        val reminder = ReminderDTO("Title", "Description", "Location", 19.0, 20.2)
 //
+//
+//        //mainCoroutineRule.pauseDispatcher()
+//        val job = launch {
+//            dataSource.saveReminder(reminder)
+//        }
+//        job.cancel()
+//        remindersListViewModel.loadReminders()
 //        assertThat(
-//            remindersListViewModel.showSnackBar.getOrAwaitValue(), `is`(notNullValue())
+//            remindersListViewModel.showLoading.getOrAwaitValue(), `is`(true)
 //        )
+//        job.start()
+//        //  mainCoroutineRule.resumeDispatcher()
+//        assertThat(
+//            remindersListViewModel.showLoading.getOrAwaitValue(), `is`(false)
+//        )
+//
 //    }
+
+    @Test
+    fun shouldReturnError() = runTest(UnconfinedTestDispatcher()) {
+        dataSource.setReturnsError(true)
+        remindersListViewModel.loadReminders()
+
+        assertThat(
+            remindersListViewModel.showSnackBar.getOrAwaitValue(), `is`(notNullValue())
+        )
+    }
 
 }
