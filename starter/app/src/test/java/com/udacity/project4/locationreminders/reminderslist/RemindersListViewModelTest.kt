@@ -46,27 +46,27 @@ class RemindersListViewModelTest {
         remindersListViewModel = RemindersListViewModel(application, dataSource)
     }
 
-//    @Test
-//    fun check_loading() = runTest(UnconfinedTestDispatcher()) {
-//        val reminder = ReminderDTO("Title", "Description", "Location", 19.0, 20.2)
-//
-//
-//        //mainCoroutineRule.pauseDispatcher()
-//        val job = launch {
-//            dataSource.saveReminder(reminder)
-//        }
-//        job.cancel()
-//        remindersListViewModel.loadReminders()
-//        assertThat(
-//            remindersListViewModel.showLoading.getOrAwaitValue(), `is`(true)
-//        )
-//        job.start()
-//        //  mainCoroutineRule.resumeDispatcher()
-//        assertThat(
-//            remindersListViewModel.showLoading.getOrAwaitValue(), `is`(false)
-//        )
-//
-//    }
+    @Test
+    fun check_loading() = runTest(UnconfinedTestDispatcher()) {
+        val reminder = ReminderDTO("Title", "Description", "Location", 19.0, 20.2)
+
+
+        //mainCoroutineRule.pauseDispatcher()
+        val job = launch {
+            dataSource.saveReminder(reminder)
+        }
+        job.cancel()
+        remindersListViewModel.loadReminders()
+        assertThat(
+            remindersListViewModel.showLoading.getOrAwaitValue(), `is`(true)
+        )
+        job.start()
+        //  mainCoroutineRule.resumeDispatcher()
+        assertThat(
+            remindersListViewModel.showLoading.getOrAwaitValue(), `is`(false)
+        )
+
+    }
 
     @Test
     fun shouldReturnError() = runTest(UnconfinedTestDispatcher()) {
