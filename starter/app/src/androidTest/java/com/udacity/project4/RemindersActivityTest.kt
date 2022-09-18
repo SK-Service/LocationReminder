@@ -1,6 +1,5 @@
 package com.udacity.project4
 
-import com.udacity.project4.R
 import android.app.Activity
 import android.app.Application
 import androidx.navigation.NavController
@@ -10,6 +9,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -23,6 +23,8 @@ import com.udacity.project4.util.DataBindingIdlingResource
 import com.udacity.project4.util.monitorActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.core.Is.`is`
+import org.hamcrest.core.IsNot.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -115,8 +117,19 @@ class RemindersActivityTest : KoinTest {
        onView(withId(R.id.saveReminder)).perform(click())
 
         // THEN
+        // check whether title is being displayed correctly
         onView(withText("Title")).check(matches(isDisplayed()))
 
+        //Check whether the reminder saved toast message is displayed
+        onView(withText(R.string.reminder_saved)).inRoot(
+            withDecorView(
+                not(
+                    `is`(
+                        activity!!.window.decorView
+                    )
+                )
+            )
+        ).check(matches(isDisplayed()))
 
         runBlocking {
             delay(6000)
@@ -134,15 +147,17 @@ class RemindersActivityTest : KoinTest {
         onView(withId(R.id.addReminderFAB)).perform(click())
         onView(withId(R.id.reminderTitle)).perform(replaceText("Title"))
         onView(withId(R.id.reminderDescription)).perform(replaceText("Description"))
+        //AND Missing location
 
         // WHEN - click saveButton
         onView(withId(R.id.saveReminder)).perform(click())
 
         // THEN - shows Snackbar
-        onView(withId(com.google.android.material.R.id.snackbar_text)).check(matches(isDisplayed()))
+        onView(withId(com.google.android.material.R.id.snackbar_text)).check(
+                                                    matches(isDisplayed()))
 
         runBlocking {
-            delay(3000)
+            delay(2000)
         }
     }
 }
