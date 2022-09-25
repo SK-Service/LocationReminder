@@ -6,6 +6,7 @@ import java.util.*
 /**
  * data class acts as a data mapper between the DB and the UI
  */
+
 data class ReminderDataItem(
     var title: String?,
     var description: String?,

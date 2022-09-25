@@ -36,7 +36,6 @@ class SaveReminderViewModelTest {
     private lateinit var dataSource: FakeDataSource
     private lateinit var saveReminderViewModel: SaveReminderViewModel
 
-    //TODO: provide testing to the SaveReminderView and its live data objects
     @Before
     fun setupViewModel() {
         stopKoin()

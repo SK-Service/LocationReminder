@@ -54,7 +54,6 @@ class MainFragment : Fragment() {
         Log.i(TAG, "inside onCreateView")
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
 
-        // TODO Remove the two lines below once observeAuthenticationState is implemented.
         binding.welcomeText.text = viewModel.getFactToDisplay(requireContext())
         binding.authButton.text = getString(R.string.login_btn)
 
@@ -73,9 +72,7 @@ class MainFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        // TODO Listen to the result of the sign in process by filter for when
-        //  SIGN_IN_REQUEST_CODE is passed back. Start by having log statements to know
-        //  whether the user has signed in successfully
+
     Log.i(TAG, "Inside onActivityResult; result code:<${resultCode}>, request code:<${requestCode}")
 
         if (requestCode == MainFragment.SIGN_IN_RESULT_CODE) {
@@ -105,10 +102,9 @@ class MainFragment : Fragment() {
                     LoginViewModel.AuthenticationState.AUTHENTICATED -> {
                             binding.authButton.text = getString( R.string.logout_button_text)
                             binding.authButton.setOnClickListener {
-                                // TODO implement logging out user in next step
                                 AuthUI.getInstance().signOut(requireContext())
                             }
-                        // TODO 2. If the user is logged in,
+
                         binding.welcomeText.text = getFactWithPersonalization(factToDisplay)
 
                         //Start RemindersActivity after the user has successfully logged in
@@ -118,7 +114,6 @@ class MainFragment : Fragment() {
                         }
                     }
                     else -> {
-                        // TODO 3. Lastly, if there is no logged-in user,
                         binding.authButton.text = getString(R.string.login_button_text)
                         binding.authButton.setOnClickListener { launchSignInFlow() }
                         binding.welcomeText.text = factToDisplay
@@ -139,8 +134,7 @@ class MainFragment : Fragment() {
     }
 
     private fun launchSignInFlow() {
-        // TODO Complete this function by allowing users to register and sign in with
-        //  either their email address or Google account.
+
         Log.i(TAG, "inside launchSignInFlow - just entered")
 
         // Give users the option to sign in / register with their email or Google account.

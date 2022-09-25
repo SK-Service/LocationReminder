@@ -42,7 +42,6 @@ class RemindersLocalRepositoryTest {
 
         remindersLocalRepository = RemindersLocalRepository(remindersDatabase.reminderDao(), Dispatchers.Main)
     }
-//    TODO: Add testing implementation to the RemindersLocalRepository.kt
 
     @Test
     fun validateSaveReminders() = runBlocking {

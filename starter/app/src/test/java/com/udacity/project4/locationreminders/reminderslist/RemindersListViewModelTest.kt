@@ -9,8 +9,8 @@ import com.udacity.project4.locationreminders.MainCoroutineRule
 import com.udacity.project4.locationreminders.data.FakeDataSource
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import com.udacity.project4.locationreminders.getOrAwaitValue
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.notNullValue
@@ -24,8 +24,6 @@ import org.koin.core.context.stopKoin
 @RunWith(AndroidJUnit4::class)
 @ExperimentalCoroutinesApi
 class RemindersListViewModelTest {
-
-    //TODO: provide testing to the RemindersListViewModel and its live data objects
 
     private lateinit var remindersListViewModel: RemindersListViewModel
     private lateinit var dataSource: FakeDataSource
@@ -50,18 +48,16 @@ class RemindersListViewModelTest {
     fun check_loading() = runTest(UnconfinedTestDispatcher()) {
         val reminder = ReminderDTO("Title", "Description", "Location", 19.0, 20.2)
 
+        //Set Main Dispatcher to not run eagerly
+        Dispatchers.setMain(StandardTestDispatcher())
 
-        //mainCoroutineRule.pauseDispatcher()
-        val job = launch {
-            dataSource.saveReminder(reminder)
-        }
-        job.cancel()
+        dataSource.saveReminder(reminder)
         remindersListViewModel.loadReminders()
         assertThat(
             remindersListViewModel.showLoading.getOrAwaitValue(), `is`(true)
         )
-        job.start()
-        //  mainCoroutineRule.resumeDispatcher()
+
+        advanceUntilIdle()
         assertThat(
             remindersListViewModel.showLoading.getOrAwaitValue(), `is`(false)
         )
