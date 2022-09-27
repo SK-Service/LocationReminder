@@ -70,7 +70,7 @@ class RemindersListViewModelTest {
         remindersListViewModel.loadReminders()
 
         assertThat(
-            remindersListViewModel.showSnackBar.getOrAwaitValue(), `is`(notNullValue())
+            remindersListViewModel.showSnackBar.getOrAwaitValue(), `is`("ERROR")
         )
     }
 
