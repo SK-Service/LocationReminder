@@ -1,5 +1,6 @@
 package com.udacity.project4.locationreminders.data.local
 
+import android.util.Log
 import com.udacity.project4.locationreminders.data.ReminderDataSource
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import com.udacity.project4.locationreminders.data.dto.Result
@@ -26,6 +27,7 @@ class RemindersLocalRepository(
     override suspend fun getReminders(): Result<List<ReminderDTO>> = withContext(ioDispatcher) {
         wrapEspressoIdlingResource {
             return@withContext try {
+                Log.i("ReminderLocal","before fetching reminders")
                 Result.Success(remindersDao.getReminders())
             } catch (ex: Exception) {
                 Result.Error(ex.localizedMessage)
@@ -41,6 +43,7 @@ class RemindersLocalRepository(
     override suspend fun saveReminder(reminder: ReminderDTO) =
         withContext(ioDispatcher) {
             wrapEspressoIdlingResource {
+                Log.i("ReminderLocal","before saving reminders")
                 remindersDao.saveReminder(reminder)
             }
 
