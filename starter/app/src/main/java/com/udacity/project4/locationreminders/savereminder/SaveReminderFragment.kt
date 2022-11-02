@@ -273,16 +273,16 @@ class SaveReminderFragment : BaseFragment() {
 //                REQUEST_TURN_DEVICE_LOCATION_ON)
 //        }
     Log.i("SaveReminderFrag", "Request for Permissions :<${resultCode}>")
-        activity?.let { ActivityCompat.requestPermissions(
-            it,
-            permissionsArray,
-            resultCode
-        ) }
-
-//        requestPermissions(
+//        activity?.let { ActivityCompat.requestPermissions(
+//            it,
 //            permissionsArray,
 //            resultCode
-//        )
+//        ) }
+
+        requestPermissions(
+            permissionsArray,
+            resultCode
+        )
 
     }
     @TargetApi(31)
