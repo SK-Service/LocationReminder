@@ -78,6 +78,7 @@ class SaveReminderFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.i("SaveReminderFrag", "Inside onViewCreated")
         binding.lifecycleOwner = this
         binding.selectLocation.setOnClickListener {
             // Navigate to another fragment to get the user location
@@ -278,11 +279,12 @@ class SaveReminderFragment : BaseFragment() {
 //            permissionsArray,
 //            resultCode
 //        ) }
-
+        Log.i("SaveReminderFrag", "Before requestPermissions")
         requestPermissions(
             permissionsArray,
             resultCode
         )
+        Log.i("SaveReminderFrag", "After requestPermissions")
 
     }
     @TargetApi(31)
